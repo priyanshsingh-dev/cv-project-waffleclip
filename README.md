@@ -1,3 +1,7 @@
+> **This fork adds Balanced Test-time Prototype Refinement (TPR):** a ~15-line, training-free add-on ([`improvement.py`](improvement.py), enabled with `--refine`) that improves WaffleCLIP by **+6.0 points top-1 on average** over DTD, EuroSAT, Oxford Pets and CUB-200 (ViT-B/32). See **[REPORT.md](REPORT.md)** for the method, full benchmark and ablations. Reproduce with `bash run_benchmark.sh`.
+>
+> ![TPR results](images/tpr_results.png)
+
 # WaffleCLIP [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/release/python-390/)
 
 __Authors:__ [Karsten Roth](https://karroth.com/), [Jae Myung Kim](https://jaemyung-kim.github.io/), [Almut Sophia Koepke](https://www.eml-unitue.de/people/almut-sophia-koepke), [Oriol Vinyals](https://scholar.google.com/citations?user=NkzyCvUAAAAJ&hl=en), [Cordelia Schmid](https://scholar.google.com/citations?user=IvqCXP4AAAAJ&hl=en), [Zeynep Akata](https://www.eml-unitue.de/people/zeynep-akata)
