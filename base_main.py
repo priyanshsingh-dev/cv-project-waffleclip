@@ -59,6 +59,11 @@ parser.add_argument('--savename', type=str, default='results',
                     help='Name of csv-file in which results are stored.')
 ###
 parser.add_argument('--vmf_scale', type=float, default=1)
+### [NEW] Test-time Prototype Refinement (see improvement.py).
+parser.add_argument('--refine', action='store_true', help='Refine class prototypes with unlabelled test images.')
+parser.add_argument('--refine_alpha', type=float, default=1.0, help='Weight of the image prototype.')
+parser.add_argument('--refine_steps', type=int, default=3, help='Number of refinement iterations.')
+parser.add_argument('--refine_balance', type=int, default=1, help='1: balance class predictions, 0: off (ablation).')
 opt = parser.parse_args()
 opt.apply_descriptor_modification = not opt.dont_apply_descriptor_modification
 
@@ -86,7 +91,7 @@ precomputed_encs_file = os.path.join(
 if os.path.exists(precomputed_encs_file):
     load_res = pickle.load(open(precomputed_encs_file, 'rb'))
 else:
-    dataloader = DataLoader(dataset, opt.batch_size, shuffle=False, num_workers=8, pin_memory=True)    
+    dataloader = DataLoader(dataset, opt.batch_size, shuffle=False, num_workers=0 if os.name == 'nt' else 8, pin_memory=True)  # Windows: no worker processes    
     
     enc_coll = []
     label_coll = []
@@ -122,6 +127,12 @@ for rep in range(opt.reps):
 
     description_encodings = waffle_tools.compute_description_encodings(opt, model, mode=opt.mode)
 
+    if opt.refine:  # [NEW] replace each class's prompt set by one refined prototype.
+        import improvement
+        text_protos = torch.stack([v.float().mean(dim=0) for v in description_encodings.values()])
+        protos, class_bias = improvement.refine_prototypes(text_protos, torch.cat(encoding_coll).to(device), opt.refine_alpha, opt.refine_steps, balance=opt.refine_balance == 1)
+        description_encodings = {k: protos[i:i+1].to(encoding_coll[0].dtype) for i, k in enumerate(description_encodings)}
+
     description_nums = [len(x) for x in description_encodings.values()]
     print(f'Minimum and Maximum number of descriptions/class: {np.min(description_nums)} | {np.max(description_nums)}')
 
@@ -143,7 +154,10 @@ for rep in range(opt.reps):
                 image_description_similarity_cumulative[i] = waffle_tools.aggregate_similarity(image_description_similarity_t[i], aggregation_method=opt.aggregate)
                 
             image_description_similarity = torch.stack(image_description_similarity_cumulative, dim=1)
-        
+
+        if opt.refine:  # [NEW] class-balance offset from improvement.py
+            image_description_similarity = image_description_similarity + class_bias
+
         acc = accuracy_metric(image_description_similarity.softmax(dim=-1), labels)
         acc_top5 = accuracy_metric_top5(image_description_similarity.softmax(dim=-1), labels)
 

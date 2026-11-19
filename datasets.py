@@ -54,7 +54,7 @@ class CUBDataset(datasets.ImageFolder):
                 if int(idx) in indices_to_use:
                     filenames_to_use.add(fn)
 
-        img_paths_cut = {'/'.join(img_path.rsplit('/', 2)[-2:]): idx for idx, (img_path, lb) in enumerate(self.imgs)}
+        img_paths_cut = {'/'.join(img_path.replace(os.sep, '/').rsplit('/', 2)[-2:]): idx for idx, (img_path, lb) in enumerate(self.imgs)}
         imgs_to_use = [self.imgs[img_paths_cut[fn]] for fn in filenames_to_use]
 
         _, targets_to_use = list(zip(*imgs_to_use))

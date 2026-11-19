@@ -90,17 +90,17 @@ def setup(opt: argparse.Namespace):
 
     opt.descriptor_fname = None
 
-    IMAGENET_DIR = '/home/karsten_dl/Dropbox/Projects/Datasets/ImageNet2012' # REPLACE THIS WITH YOUR OWN PATH
-    IMAGENETV2_DIR = '/home/karsten_dl/Dropbox/Projects/Datasets/ImageNetV2' # REPLACE THIS WITH YOUR OWN PATH
-    CUB_DIR = '/home/karsten_dl/Dropbox/Projects/Datasets/cub200' # REPLACE THIS WITH YOUR OWN PATH
-    EUROSAT_DIR = '/home/karsten_dl/Dropbox/Projects/Datasets/eurosat' # REPLACE THIS WITH YOUR OWN PATH
-    PLACES365_DIR = '/home/karsten_dl/Dropbox/Projects/Datasets/places365' # REPLACE THIS WITH YOUR OWN PATH
-    PETS_DIR = '/home/karsten_dl/Dropbox/Projects/Datasets/pets' # REPLACE THIS WITH YOUR OWN PATH
-    FOOD101_DIR = '/home/karsten_dl/Dropbox/Projects/Datasets/food101' # REPLACE THIS WITH YOUR OWN PATH
-    DTD_DIR = '/home/karsten_dl/Dropbox/Projects/Datasets/dtd' # REPLACE THIS WITH YOUR OWN PATH
-    FLOWERS102_DIR = '/home/karsten_dl/Dropbox/Projects/Datasets/flowers102' # REPLACE THIS WITH YOUR OWN PATH
-    FGVCAIRCRAFT_DIR = '/home/karsten_dl/Dropbox/Projects/Datasets/fgvcaircraft' # REPLACE THIS WITH YOUR OWN PATH
-    CARS_DIR = '/home/karsten_dl/Dropbox/Projects/Datasets/cars' # REPLACE THIS WITH YOUR OWN PATH
+    IMAGENET_DIR = './data/ImageNet2012' # REPLACE THIS WITH YOUR OWN PATH
+    IMAGENETV2_DIR = './data/ImageNetV2' # REPLACE THIS WITH YOUR OWN PATH
+    CUB_DIR = './data/cub200' # REPLACE THIS WITH YOUR OWN PATH
+    EUROSAT_DIR = './data/eurosat' # REPLACE THIS WITH YOUR OWN PATH
+    PLACES365_DIR = './data/places365' # REPLACE THIS WITH YOUR OWN PATH
+    PETS_DIR = './data/pets' # REPLACE THIS WITH YOUR OWN PATH
+    FOOD101_DIR = './data/food101' # REPLACE THIS WITH YOUR OWN PATH
+    DTD_DIR = './data/dtd' # REPLACE THIS WITH YOUR OWN PATH
+    FLOWERS102_DIR = './data/flowers102' # REPLACE THIS WITH YOUR OWN PATH
+    FGVCAIRCRAFT_DIR = './data/fgvcaircraft' # REPLACE THIS WITH YOUR OWN PATH
+    CARS_DIR = './data/cars' # REPLACE THIS WITH YOUR OWN PATH
 
     # PyTorch datasets
     opt.tfms = _transform(opt.image_size)
